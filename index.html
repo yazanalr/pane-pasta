@@ -2,19 +2,19 @@
 <html lang="en" >
 <head>
     <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Pane Pasta</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&family=Roboto:wght@400;500&family=Cairo:wght@400;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-<meta name="theme-color" content="#d97c9c" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pane Pasta</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&family=Roboto:wght@400;500&family=Cairo:wght@400;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <meta name="theme-color" content="#d97c9c" />
 </head>
 <body>
 
     <header>
-        <img src="logo.PNG" alt="Pane Pasta Logo" class="logo">
+        <img src="logo.PNG" alt="Pane Pasta Logo" class="logo" />
         <nav>
             <ul>
                 <li><a href="#overview"><i class="fas fa-info-circle"></i> <span id="navOverview">Overview</span></a></li>
@@ -28,27 +28,37 @@
     <main>
         <section id="overview" class="section fade-in">
             <h1 id="overviewTitle">Welcome to Pane Pasta!</h1>
-            <p id="overviewText">Discover a culinary adventure like no other on wheels! Our food truck redefines the street food scene with our unique twist on pasta served with freshly baked bread. Experience the perfect fusion of convenience and gourmet delight as you savor each bite of our tantalizing creations.</p>
-            <img src="us.PNG" alt="Pane Pasta food truck experience" class="menu-image">
+            <p id="overviewText">
+                Discover a culinary adventure like no other on wheels! Our food truck redefines the street food scene with our unique twist on pasta served with freshly baked bread. Experience the perfect fusion of convenience and gourmet delight as you savor each bite of our tantalizing creations.
+            </p>
+            <img src="us.PNG" alt="Pane Pasta food truck experience" class="menu-image" />
         </section>
 
         <section id="menu" class="section fade-in">
             <h2 id="menuTitle">Our Menu</h2>
-            <img src="menu.PNG" alt="Menu Image" class="menu-image">
+            <img src="menu.PNG" alt="Menu Image" class="menu-image" />
         </section>
 
         <section id="contact" class="section fade-in">
             <h2 id="contactTitle">Find Us & Contact</h2>
-            <p id="instagramLabel"><i class="fab fa-instagram"></i> <strong>Instagram:</strong> <a href="https://www.instagram.com/pane.pastaa" target="_blank">@pane.pastaa</a></p>
-            <p id="locationLabel"><i class="fas fa-map-marker-alt"></i> <strong>Location:</strong> <a href="https://maps.app.goo.gl/kNWPLrTYhtWY5w7K8" target="_blank">Food Truck</a></p>
-            <p><span id="timeLabel"><i class="fas fa-clock"></i> <strong>Time:</strong></span> <span class="highlight" id="timeValue">6:00 PM - 4:00 AM</span></p>
+            <p id="instagramLabel">
+                <i class="fab fa-instagram"></i> <strong>Instagram:</strong> 
+                <a href="https://www.instagram.com/pane.pastaa" target="_blank" rel="noopener noreferrer">@pane.pastaa</a>
+            </p>
+            <p id="locationLabel">
+                <i class="fas fa-map-marker-alt"></i> <strong>Location:</strong> 
+                <a href="https://maps.app.goo.gl/kNWPLrTYhtWY5w7K8" target="_blank" rel="noopener noreferrer">Food Truck</a>
+            </p>
+            <p>
+                <span id="timeLabel"><i class="fas fa-clock"></i> <strong>Time:</strong></span> 
+                <span class="highlight" id="timeValue">6:00 PM - 4:00 AM</span>
+            </p>
         </section>
     </main>
 
     <footer>
         <p id="footerText">&copy; 2025 Pane Pasta. All rights reserved.</p>
     </footer>
-
 
     <script>
         // Scroll animation effect
@@ -65,67 +75,70 @@
         });
     </script>
 
-<script>
-    // Language toggle functionality
-    const langToggle = document.getElementById('langToggle');
-    let isArabic = false;
+    <script>
+        // Language toggle functionality
+        const langToggle = document.getElementById('langToggle');
+        let isArabic = false;
 
-    const translations = {
-        en: {
-            navOverview: "Overview",
-            navMenu: "Menu",
-            navContact: "Contact",
-            overviewTitle: "Welcome to Pane Pasta!",
-            overviewText: "Discover a culinary adventure like no other on wheels! Our food truck redefines the street food scene with our unique twist on pasta served with freshly baked bread. Experience the perfect fusion of convenience and gourmet delight as you savor each bite of our tantalizing creations.",
-            menuTitle: "Our Menu",
-            contactTitle: "Find Us & Contact",
-            instagramLabel: `<i class="fab fa-instagram"></i> <strong>Instagram:</strong> <a href="https://www.instagram.com/pane.pastaa" target="_blank">@pane.pastaa</a>`,
-            locationLabel: `<i class="fas fa-map-marker-alt"></i> <strong>Location:</strong> <a href="https://maps.app.goo.gl/kNWPLrTYhtWY5w7K8" target="_blank">Food Truck</a>`,
-            timeLabel: `<i class="fas fa-clock"></i> <strong>Time:</strong>`,
-            timeValue: "6:00 PM - 4:00 AM",
-            footerText: "&copy; 2025 Pane Pasta. All rights reserved.",
-            langBtn: "العربية"
-        },
-        ar: {
-            navOverview: "نظرة عامة",
-            navMenu: "القائمة",
-            navContact: "تواصل",
-            overviewTitle: "مرحبًا بكم في Pane Pasta!",
-            overviewText: "اكتشف مغامرة طهي لا مثيل لها على عجلات! شاحنة الطعام الخاصة بنا تعيد تعريف مشهد طعام الشارع من خلال لمستنا الفريدة على الباستا المقدمة مع الخبز الطازج. استمتع بمزيج مثالي من الراحة والمذاق الفاخر مع كل قضمة من إبداعاتنا الشهية.",
-            menuTitle: "قائمتنا",
-            contactTitle: "تواصل معنا",
-            instagramLabel: `<i class="fab fa-instagram"></i> <strong>انستجرام:</strong> <a href="https://www.instagram.com/pane.pastaa" target="_blank">@pane.pastaa</a>`,
-            locationLabel: `<i class="fas fa-map-marker-alt"></i> <strong>الموقع:</strong> <a href="https://maps.app.goo.gl/kNWPLrTYhtWY5w7K8" target="_blank">شاحنة الطعام</a>`,
-            timeLabel: `<i class="fas fa-clock"></i> <strong>الوقت:</strong>`,
-            timeValue: "٦:٠٠ مساءً - ٤:٠٠ صباحًا",
-            footerText: "&copy; 2025 Pane Pasta . جميع الحقوق محفوظة.",
-            langBtn: "English"
+        const translations = {
+            en: {
+                navOverview: "Overview",
+                navMenu: "Menu",
+                navContact: "Contact",
+                overviewTitle: "Welcome to Pane Pasta!",
+                overviewText: "Discover a culinary adventure like no other on wheels! Our food truck redefines the street food scene with our unique twist on pasta served with freshly baked bread. Experience the perfect fusion of convenience and gourmet delight as you savor each bite of our tantalizing creations.",
+                menuTitle: "Our Menu",
+                contactTitle: "Find Us & Contact",
+                instagramLabel: `<i class="fab fa-instagram"></i> <strong>Instagram:</strong> <a href="https://www.instagram.com/pane.pastaa" target="_blank" rel="noopener noreferrer">@pane.pastaa</a>`,
+                locationLabel: `<i class="fas fa-map-marker-alt"></i> <strong>Location:</strong> <a href="https://maps.app.goo.gl/kNWPLrTYhtWY5w7K8" target="_blank" rel="noopener noreferrer">Food Truck</a>`,
+                timeLabel: `<i class="fas fa-clock"></i> <strong>Time:</strong>`,
+                timeValue: "6:00 PM - 4:00 AM",
+                footerText: "&copy; 2025 Pane Pasta. All rights reserved.",
+                langBtn: "العربية"
+            },
+            ar: {
+                navOverview: "نظرة عامة",
+                navMenu: "القائمة",
+                navContact: "تواصل",
+                overviewTitle: "مرحبًا بكم في Pane Pasta!",
+                overviewText: "اكتشف مغامرة طهي لا مثيل لها على عجلات! شاحنة الطعام الخاصة بنا تعيد تعريف مشهد طعام الشارع من خلال لمستنا الفريدة على الباستا المقدمة مع الخبز الطازج. استمتع بمزيج مثالي من الراحة والمذاق الفاخر مع كل قضمة من إبداعاتنا الشهية.",
+                menuTitle: "قائمتنا",
+                contactTitle: "تواصل معنا",
+                instagramLabel: `<i class="fab fa-instagram"></i> <strong>انستجرام:</strong> <a href="https://www.instagram.com/pane.pastaa" target="_blank" rel="noopener noreferrer">@pane.pastaa</a>`,
+                locationLabel: `<i class="fas fa-map-marker-alt"></i> <strong>الموقع:</strong> <a href="https://maps.app.goo.gl/kNWPLrTYhtWY5w7K8" target="_blank" rel="noopener noreferrer">شاحنة الطعام</a>`,
+                timeLabel: `<i class="fas fa-clock"></i> <strong>الوقت:</strong>`,
+                timeValue: "٦:٠٠ مساءً - ٤:٠٠ صباحًا",
+                footerText: "&copy; 2025 Pane Pasta . جميع الحقوق محفوظة.",
+                langBtn: "English"
+            }
+        };
+
+        function setLanguage(lang) {
+            document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+            document.documentElement.lang = lang;
+            document.getElementById('navOverview').textContent = translations[lang].navOverview;
+            document.getElementById('navMenu').textContent = translations[lang].navMenu;
+            document.getElementById('navContact').textContent = translations[lang].navContact;
+            document.getElementById('overviewTitle').textContent = translations[lang].overviewTitle;
+            document.getElementById('overviewText').textContent = translations[lang].overviewText;
+            document.getElementById('menuTitle').textContent = translations[lang].menuTitle;
+            document.getElementById('contactTitle').textContent = translations[lang].contactTitle;
+            document.getElementById('instagramLabel').innerHTML = translations[lang].instagramLabel;
+            document.getElementById('locationLabel').innerHTML = translations[lang].locationLabel;
+            document.getElementById('timeLabel').innerHTML = translations[lang].timeLabel;
+            document.getElementById('timeValue').textContent = translations[lang].timeValue;
+            document.getElementById('footerText').innerHTML = translations[lang].footerText;
+            langToggle.textContent = translations[lang].langBtn;
         }
-    };
 
-    function setLanguage(lang) {
-        document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
-        document.getElementById('navOverview').textContent = translations[lang].navOverview;
-        document.getElementById('navMenu').textContent = translations[lang].navMenu;
-        document.getElementById('navContact').textContent = translations[lang].navContact;
-        document.getElementById('overviewTitle').textContent = translations[lang].overviewTitle;
-        document.getElementById('overviewText').textContent = translations[lang].overviewText;
-        document.getElementById('menuTitle').textContent = translations[lang].menuTitle;
-        document.getElementById('contactTitle').textContent = translations[lang].contactTitle;
-        document.getElementById('instagramLabel').innerHTML = translations[lang].instagramLabel;
-        document.getElementById('locationLabel').innerHTML = translations[lang].locationLabel;
-        document.getElementById('timeLabel').innerHTML = translations[lang].timeLabel;
-        document.getElementById('timeValue').textContent = translations[lang].timeValue;
-        document.getElementById('footerText').innerHTML = translations[lang].footerText;
-        langToggle.textContent = translations[lang].langBtn;
-    }
+        langToggle.addEventListener('click', () => {
+            isArabic = !isArabic;
+            setLanguage(isArabic ? 'ar' : 'en');
+        });
 
-    langToggle.addEventListener('click', () => {
-        isArabic = !isArabic;
-        setLanguage(isArabic ? 'ar' : 'en');
-        direct.querySelector('html').lang = isArabic ? 'ar' : 'en';
-    });
-</script>
+        // Set initial language to Arabic on page load
+        setLanguage('ar');
+    </script>
 
 </body>
 </html>
