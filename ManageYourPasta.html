@@ -1,0 +1,1268 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>نظام مخزون مطعم المعكرونة</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #fff5f8;
+      --surface: #ffffff;
+      --surface-2: #fff7fa;
+      --ink: #301724;
+      --muted: #7a5a6a;
+      --line: #f3cddd;
+      --accent: #db2777;
+      --accent-2: #9d174d;
+      --accent-dark: #be185d;
+      --gold: #f472b6;
+      --danger: #b42318;
+      --warn: #a15c07;
+      --ok: #027a48;
+      --soft-danger: #fee4e2;
+      --soft-warn: #fef0c7;
+      --soft-ok: #dcfae6;
+      --shadow: 0 18px 42px rgba(17, 24, 39, .09);
+      --shadow-soft: 0 8px 24px rgba(17, 24, 39, .06);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Tahoma, Arial, sans-serif;
+      background:
+        radial-gradient(circle at 8% 4%, rgba(244, 114, 182, .22), transparent 28%),
+        radial-gradient(circle at 88% 10%, rgba(219, 39, 119, .12), transparent 24%),
+        linear-gradient(180deg, #ffffff 0, var(--bg) 430px);
+      color: var(--ink);
+      line-height: 1.6;
+    }
+
+    button, input, select {
+      font: inherit;
+    }
+
+    .wrap {
+      width: min(1240px, calc(100% - 28px));
+      margin: 0 auto;
+    }
+
+    header {
+      padding: 30px 0 18px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 18px;
+      align-items: end;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(26px, 4vw, 42px);
+      letter-spacing: 0;
+      color: #101828;
+    }
+
+    .subtitle {
+      margin: 6px 0 0;
+      color: var(--muted);
+      max-width: 720px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      min-height: 28px;
+      padding: 4px 10px;
+      margin-bottom: 10px;
+      border: 1px solid rgba(14, 147, 132, .22);
+      border-radius: 999px;
+      background: rgba(253, 242, 248, .92);
+      color: #be185d;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    main {
+      padding: 8px 0 42px;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+      margin: 14px 0 18px;
+    }
+
+    .stat {
+      position: relative;
+      overflow: hidden;
+      background: rgba(255, 255, 255, .9);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow-soft);
+      min-height: 96px;
+      padding: 14px;
+    }
+
+    .stat::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto;
+      height: 4px;
+      background: linear-gradient(90deg, var(--accent), var(--gold));
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 26px;
+      line-height: 1.25;
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .dashboard {
+      display: grid;
+      grid-template-columns: 1.35fr .65fr;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    .dash-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .dash-card {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: linear-gradient(180deg, #ffffff, var(--surface-2));
+      padding: 14px;
+      min-height: 92px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .dash-card.good {
+      border-color: #abefc6;
+      background: #f0fdf4;
+    }
+
+    .dash-card.warn {
+      border-color: #fedf89;
+      background: #fffbeb;
+    }
+
+    .dash-card.bad {
+      border-color: #fecdca;
+      background: #fff7f6;
+    }
+
+    .dash-card strong {
+      display: block;
+      font-size: 22px;
+      line-height: 1.3;
+    }
+
+    .dash-card span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .bar-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .bar-row {
+      display: grid;
+      grid-template-columns: 138px 1fr 76px;
+      gap: 10px;
+      align-items: center;
+      font-size: 13px;
+    }
+
+    .bar-track {
+      height: 12px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: #e5e7eb;
+    }
+
+    .bar-fill {
+      width: var(--width);
+      height: 100%;
+      border-radius: inherit;
+      background: var(--color);
+    }
+
+    .priority-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .priority-item {
+      display: grid;
+      gap: 3px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 10px;
+      background: #fff;
+    }
+
+    .priority-item strong {
+      font-size: 14px;
+    }
+
+    .priority-item span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 18px;
+      align-items: start;
+      margin-bottom: 18px;
+    }
+
+    .entry-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .stack {
+      display: grid;
+      gap: 18px;
+    }
+
+    .panel {
+      background: rgba(255, 255, 255, .94);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      backdrop-filter: blur(12px);
+    }
+
+    .panel-head {
+      padding: 16px 18px;
+      border-bottom: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(248, 250, 252, .95), rgba(255, 255, 255, .95));
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 18px;
+      letter-spacing: 0;
+    }
+
+    .note {
+      color: var(--muted);
+      font-size: 13px;
+      margin: 0;
+    }
+
+    .panel-body {
+      padding: 18px;
+    }
+
+    .controls {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      align-items: end;
+    }
+
+    .order-row {
+      display: grid;
+      grid-template-columns: 1fr 110px;
+      gap: 10px;
+      align-items: end;
+    }
+
+    label {
+      display: grid;
+      gap: 6px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    input, select {
+      width: 100%;
+      min-height: 40px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #fff;
+      color: var(--ink);
+      padding: 8px 10px;
+    }
+
+    input:focus, select:focus {
+      outline: 3px solid rgba(219, 39, 119, .16);
+      border-color: var(--accent);
+    }
+
+    button {
+      min-height: 40px;
+      border: 0;
+      border-radius: 6px;
+      padding: 8px 13px;
+      background: linear-gradient(180deg, var(--accent), var(--accent-dark));
+      color: #fff;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+      box-shadow: 0 8px 18px rgba(14, 147, 132, .18);
+    }
+
+    button:hover {
+      background: var(--accent-dark);
+    }
+
+    .secondary {
+      background: #e8eef6;
+      color: var(--ink);
+      box-shadow: none;
+    }
+
+    .secondary:hover {
+      background: #d7dfec;
+    }
+
+    .danger {
+      background: #fef3f2;
+      color: var(--danger);
+      border: 1px solid #fecdca;
+    }
+
+    .danger:hover {
+      background: #fee4e2;
+    }
+
+    .blue {
+      background: linear-gradient(180deg, #be185d, #9d174d);
+    }
+
+    .blue:hover {
+      background: #1d4ed8;
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    .table-scroll {
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+      background: #fff;
+    }
+
+    th, td {
+      text-align: right;
+      border-bottom: 1px solid var(--line);
+      padding: 10px 8px;
+      vertical-align: middle;
+    }
+
+    th {
+      background: var(--surface-2);
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    tr:last-child td {
+      border-bottom: 0;
+    }
+
+    td input {
+      min-width: 82px;
+      min-height: 36px;
+      padding: 6px 8px;
+    }
+
+    .item-name {
+      min-width: 150px;
+    }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 92px;
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .status-ok {
+      color: var(--ok);
+      background: var(--soft-ok);
+    }
+
+    .status-watch {
+      color: var(--warn);
+      background: var(--soft-warn);
+    }
+
+    .status-restock {
+      color: var(--danger);
+      background: var(--soft-danger);
+    }
+
+    .dish-list, .alerts {
+      display: grid;
+      gap: 12px;
+    }
+
+    .dish {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fbfdff;
+      padding: 12px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .dish-top {
+      display: grid;
+      grid-template-columns: 1fr 112px auto;
+      gap: 10px;
+      align-items: end;
+    }
+
+    .recipe {
+      display: grid;
+      gap: 10px;
+    }
+
+    .recipe-row {
+      display: grid;
+      grid-template-columns: 1fr 130px auto;
+      gap: 8px;
+      align-items: end;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 8px;
+    }
+
+    .recipe-row label {
+      padding: 0;
+      border: 0;
+      background: transparent;
+    }
+
+    .alert {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface-2);
+      padding: 12px;
+    }
+
+    .alert strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .alert p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .alert-restock {
+      border-color: #fecdca;
+      background: #fff7f6;
+    }
+
+    .alert-watch {
+      border-color: #fedf89;
+      background: #fffbeb;
+    }
+
+    .empty {
+      color: var(--muted);
+      border: 1px dashed var(--line);
+      border-radius: 8px;
+      padding: 16px;
+      text-align: center;
+    }
+
+    .toast {
+      position: fixed;
+      left: 18px;
+      bottom: 18px;
+      z-index: 20;
+      max-width: min(360px, calc(100% - 36px));
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      color: var(--ink);
+      box-shadow: var(--shadow);
+      padding: 12px 14px;
+      display: none;
+    }
+
+    .toast.show {
+      display: block;
+    }
+
+    @media (max-width: 980px) {
+      .hero, .grid, .entry-grid, .stats, .dashboard, .dash-grid, .controls, .form-grid, .dish-top, .recipe, .recipe-row {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-actions {
+        justify-content: flex-start;
+      }
+
+      table {
+        min-width: 1060px;
+      }
+
+      .bar-row {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap hero">
+      <div>
+        <span class="eyebrow">متابعة المخزون</span>
+        <h1>برنامج مخزون المطعم</h1>
+        <p class="subtitle">أضف المواد والأصناف التي تبيعها، ثم سجّل البيع ليخصم البرنامج الكميات من المخزون تلقائيًا.</p>
+      </div>
+      <div class="hero-actions">
+        <button id="clearOrders" class="secondary" type="button">تصفير مبيعات اليوم</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="stats" aria-label="ملخص المخزون">
+      <div class="stat">
+        <strong id="todayOrders">0</strong>
+        <span>مبيعات اليوم</span>
+      </div>
+      <div class="stat">
+        <strong id="restockCount">0</strong>
+        <span>مواد تحتاج إعادة تخزين</span>
+      </div>
+      <div class="stat">
+        <strong id="coverageAverage">0</strong>
+        <span>كم يوم يكفي المخزون</span>
+      </div>
+      <div class="stat">
+        <strong id="itemCount">0</strong>
+        <span>عدد المواد</span>
+      </div>
+      <div class="stat">
+        <strong id="drinkCount">0</strong>
+        <span>عدد المشروبات</span>
+      </div>
+    </section>
+
+    <section class="dashboard" aria-label="لوحة التحكم الديناميكية">
+      <section class="panel">
+        <div class="panel-head">
+          <h2>ملخص سريع</h2>
+          <p class="note">يتحدث تلقائيًا عند إضافة مواد أو تسجيل بيع</p>
+        </div>
+        <div class="panel-body">
+          <div class="dash-grid">
+            <div class="dash-card" id="healthCard">
+              <strong id="healthScore">0%</strong>
+              <span>حالة المخزون</span>
+            </div>
+            <div class="dash-card" id="urgentCard">
+              <strong id="urgentValue">0</strong>
+              <span>مواد يجب شراؤها</span>
+            </div>
+            <div class="dash-card" id="demandCard">
+              <strong id="topDemand">-</strong>
+              <span>أكثر مادة مستخدمة</span>
+            </div>
+          </div>
+          <div class="bar-list" id="coverageChart"></div>
+        </div>
+      </section>
+
+      <aside class="panel">
+        <div class="panel-head">
+          <h2>ماذا أشتري أولًا؟</h2>
+        </div>
+        <div class="panel-body">
+          <div class="priority-list" id="priorityList"></div>
+        </div>
+      </aside>
+    </section>
+
+    <section class="panel" style="margin-bottom:18px">
+      <div class="panel-head">
+        <h2>تنبيهات المخزون</h2>
+        <p class="note">أي مادة منخفضة أو تحتاج شراء ستظهر هنا</p>
+      </div>
+      <div class="panel-body">
+        <div class="alerts" id="alerts"></div>
+      </div>
+    </section>
+
+    <div class="grid">
+      <section class="stack">
+        <section class="panel">
+          <div class="panel-head">
+            <h2>قائمة المخزون</h2>
+            <p class="note">يمكنك تعديل الاسم أو الكمية مباشرة من الجدول</p>
+          </div>
+          <div class="panel-body">
+            <div class="controls">
+              <label>كم يوم يحتاج المورد للتوصيل؟
+                <input id="leadTime" type="number" min="1" value="3">
+              </label>
+              <label>احتياط الأمان
+                <select id="safety">
+                  <option value="1.15">عادي 15%</option>
+                  <option value="1.30" selected>مزدحم 30%</option>
+                  <option value="1.50">موسم قوي 50%</option>
+                </select>
+              </label>
+              <label>حركة البيع
+                <select id="demandMode">
+                  <option value="0.85">هادئ</option>
+                  <option value="1" selected>طبيعي</option>
+                  <option value="1.35">مرتفع</option>
+                  <option value="1.7">عطلة / حملة</option>
+                </select>
+              </label>
+            </div>
+
+            <div class="table-scroll">
+              <table>
+                <thead>
+                  <tr>
+                    <th>المادة</th>
+                    <th>القسم</th>
+                    <th>الوحدة</th>
+                    <th>الكمية الحالية</th>
+                    <th>كمية الكرتون/الشراء</th>
+                    <th>استخدام يومي</th>
+                    <th>يكفي كم يوم</th>
+                    <th>كمية الشراء المقترحة</th>
+                    <th>الحالة</th>
+                    <th>إجراء</th>
+                  </tr>
+                </thead>
+                <tbody id="inventoryRows"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+      </section>
+
+      <aside class="stack">
+        <section class="panel">
+          <div class="panel-head">
+            <h2>تسجيل بيع</h2>
+          </div>
+          <div class="panel-body">
+            <form id="orderForm">
+              <div class="order-row">
+                <label>الصنف المباع
+                  <select id="dishSelect"></select>
+                </label>
+                <label>العدد
+                  <input id="dishQty" type="number" min="1" value="1">
+                </label>
+              </div>
+              <div class="actions">
+                <button type="submit">تسجيل البيع وخصم المخزون</button>
+              </div>
+            </form>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-head">
+            <h2>مكونات كل صنف</h2>
+            <p class="note">اختر المادة واكتب كم يستهلك الصنف الواحد من المخزون</p>
+          </div>
+          <div class="panel-body">
+            <div class="dish-list" id="dishList"></div>
+          </div>
+        </section>
+      </aside>
+    </div>
+
+    <section class="entry-grid" aria-label="إدخال البيانات">
+      <section class="panel">
+        <div class="panel-head">
+          <h2>إضافة مادة جديدة</h2>
+          <p class="note">اكتب المادة والكمية الموجودة الآن في المطعم</p>
+        </div>
+        <div class="panel-body">
+          <form id="itemForm" class="form-grid">
+            <label>اسم المادة
+              <input id="newItemName" required placeholder="مثال: معكرونة / ماء / صلصة">
+            </label>
+            <label>الوحدة
+              <input id="newItemUnit" required placeholder="كجم / لتر / علبة / قارورة">
+            </label>
+            <label>القسم
+              <select id="newItemCategory">
+                <option value="food">طعام</option>
+                <option value="drink">مشروبات</option>
+              </select>
+            </label>
+            <label>الكمية الموجودة الآن
+              <input id="newItemStock" required type="number" min="0" step="0.001" value="0">
+            </label>
+            <label>كمية الشراء المعتادة
+              <input id="newItemPack" required type="number" min="0.001" step="0.001" value="1">
+            </label>
+            <button class="blue" type="submit">إضافة المادة</button>
+          </form>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <h2>إضافة صنف مباع</h2>
+          <p class="note">مثل طبق باستا أو مشروب، وبعدها أضف مكوناته</p>
+        </div>
+        <div class="panel-body">
+          <form id="dishForm" class="form-grid">
+            <label>اسم الصنف المباع
+              <input id="newDishName" required placeholder="مثال: باستا روزيه / ماء صغير">
+            </label>
+            <label>متوسط البيع اليومي
+              <input id="newDishDaily" required type="number" min="0" step="1" value="10">
+            </label>
+            <button class="blue" type="submit">إضافة الصنف</button>
+          </form>
+        </div>
+      </section>
+    </section>
+  </main>
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const initialState = {
+      ordersToday: 0,
+      inventory: [],
+      dishes: []
+    };
+
+    const storeKey = "pastaInventoryStateProduction";
+    let state;
+
+    function loadState() {
+      localStorage.removeItem("pastaInventoryState");
+      localStorage.removeItem("pastaInventoryStateEditable");
+      const saved = localStorage.getItem(storeKey);
+      const loaded = saved ? JSON.parse(saved) : structuredClone(initialState);
+      loaded.inventory = Array.isArray(loaded.inventory) ? loaded.inventory : [];
+      loaded.dishes = Array.isArray(loaded.dishes) ? loaded.dishes : [];
+      normalizeState(loaded);
+      return loaded;
+    }
+
+    function saveState() {
+      normalizeState(state);
+      localStorage.setItem(storeKey, JSON.stringify(state));
+    }
+
+    function idFromName() {
+      return `id-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+    }
+
+    function escapeHtml(value) {
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;");
+    }
+
+    const maxDecimals = 3;
+
+    function roundNumber(value, digits = maxDecimals) {
+      const factor = 10 ** digits;
+      const rounded = Math.round((Number(value) + Number.EPSILON) * factor) / factor;
+      return Object.is(rounded, -0) ? 0 : rounded;
+    }
+
+    function numberValue(value, fallback = 0) {
+      const normalized = String(value).replace(",", ".").replace("٫", ".");
+      const next = Number(normalized);
+      return Number.isFinite(next) ? roundNumber(next) : fallback;
+    }
+
+    function normalizeState(targetState) {
+      targetState.ordersToday = numberValue(targetState.ordersToday);
+      targetState.inventory.forEach(item => {
+        item.stock = numberValue(item.stock);
+        item.pack = Math.max(.001, numberValue(item.pack, 1));
+      });
+      targetState.dishes.forEach(dish => {
+        dish.dailyBase = numberValue(dish.dailyBase);
+        dish.recipe = dish.recipe && typeof dish.recipe === "object" ? dish.recipe : {};
+        Object.keys(dish.recipe).forEach(itemId => {
+          dish.recipe[itemId] = numberValue(dish.recipe[itemId]);
+        });
+      });
+    }
+
+    function format(value, digits = maxDecimals) {
+      const cleanValue = roundNumber(value, digits);
+      return cleanValue.toLocaleString("ar-SA", {
+        maximumFractionDigits: digits,
+        minimumFractionDigits: 0
+      });
+    }
+
+    function inputValue(value, digits = maxDecimals) {
+      const cleanValue = roundNumber(value, digits);
+      return Number.isInteger(cleanValue)
+        ? String(cleanValue)
+        : cleanValue.toFixed(digits).replace(/0+$/, "").replace(/\.$/, "");
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById("toast");
+      toast.textContent = message;
+      toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), 2800);
+    }
+
+    function dailyIngredientDemand() {
+      const factor = numberValue(document.getElementById("demandMode").value, 1);
+      return state.dishes.reduce((totals, dish) => {
+        const expectedOrders = numberValue(dish.dailyBase) * factor;
+        Object.entries(dish.recipe).forEach(([itemId, amount]) => {
+          totals[itemId] = roundNumber((totals[itemId] || 0) + expectedOrders * numberValue(amount));
+        });
+        return totals;
+      }, {});
+    }
+
+    function getInventoryInsights() {
+      const leadTime = Math.max(1, numberValue(document.getElementById("leadTime").value, 3));
+      const safety = numberValue(document.getElementById("safety").value, 1.3);
+      const demand = dailyIngredientDemand();
+
+      return state.inventory.map(item => {
+        const daily = roundNumber(demand[item.id] || 0);
+        const stock = roundNumber(item.stock);
+        const reorderPoint = roundNumber(daily * leadTime * safety);
+        const target = roundNumber(daily * (leadTime + 4) * safety);
+        const needed = Math.max(0, roundNumber(target - stock));
+        const pack = Math.max(.001, numberValue(item.pack, 1));
+        const packs = needed > 0 ? Math.ceil(needed / pack) : 0;
+        const coverage = daily > 0 ? roundNumber(stock / daily) : 99;
+        let level = "ok";
+        if (stock <= reorderPoint) level = "restock";
+        else if (stock <= roundNumber(reorderPoint * 1.35)) level = "watch";
+
+        return { ...item, stock, pack, daily, coverage, buyQty: roundNumber(packs * pack), level };
+      });
+    }
+
+    function statusLabel(level) {
+      if (level === "restock") return "يحتاج شراء";
+      if (level === "watch") return "راقب";
+      return "جيد";
+    }
+
+    function categoryLabel(category) {
+      return category === "drink" ? "مشروبات" : "طعام";
+    }
+
+    function statusColor(level) {
+      if (level === "restock") return "#ef4444";
+      if (level === "watch") return "#f59e0b";
+      return "#10b981";
+    }
+
+    function renderDashboard(rows) {
+      const activeRows = rows.filter(item => item.daily > 0);
+      const restockRows = rows.filter(item => item.level === "restock");
+      const watchRows = rows.filter(item => item.level === "watch");
+      const weightedRisk = restockRows.length * 18 + watchRows.length * 8;
+      const health = Math.max(0, Math.round(100 - weightedRisk));
+      const topDemand = activeRows.slice().sort((a, b) => b.daily - a.daily)[0];
+      const urgent = rows
+        .filter(item => item.buyQty > 0)
+        .sort((a, b) => a.coverage - b.coverage);
+
+      document.getElementById("healthScore").textContent = `${health}%`;
+      document.getElementById("urgentValue").textContent = urgent.length ? `${urgent.length} مواد` : "لا يوجد";
+      document.getElementById("topDemand").textContent = topDemand ? `${topDemand.name} (${categoryLabel(topDemand.category)})` : "-";
+      document.getElementById("healthCard").className = `dash-card ${health < 55 ? "bad" : health < 80 ? "warn" : "good"}`;
+      document.getElementById("urgentCard").className = `dash-card ${restockRows.length ? "bad" : watchRows.length ? "warn" : "good"}`;
+      document.getElementById("demandCard").className = "dash-card";
+
+      document.getElementById("coverageChart").innerHTML = rows.length
+        ? rows
+          .slice()
+          .sort((a, b) => a.coverage - b.coverage)
+          .map(item => {
+            const width = Math.max(4, Math.min(100, (item.coverage / 10) * 100));
+            return `
+              <div class="bar-row">
+                <strong>${escapeHtml(item.name)} · ${categoryLabel(item.category)}</strong>
+                <div class="bar-track" title="${format(item.coverage)} يوم">
+                  <div class="bar-fill" style="--width:${width}%; --color:${statusColor(item.level)}"></div>
+                </div>
+                <span>${format(item.coverage)} يوم</span>
+              </div>
+            `;
+          }).join("")
+        : `<div class="empty">أضف مواد أو مشروبات للمخزون حتى تظهر البيانات.</div>`;
+
+      document.getElementById("priorityList").innerHTML = urgent.length
+        ? urgent.slice(0, 5).map(item => `
+          <div class="priority-item">
+            <strong>${escapeHtml(item.name)} · ${categoryLabel(item.category)}</strong>
+            <span>${statusLabel(item.level)} · يكفي ${format(item.coverage)} يوم · اشتر ${format(item.buyQty)} ${escapeHtml(item.unit)}</span>
+          </div>
+        `).join("")
+        : `<div class="empty">لا توجد مواد تحتاج شراء الآن.</div>`;
+    }
+
+    function renderInventory() {
+      const rows = getInventoryInsights();
+      document.getElementById("inventoryRows").innerHTML = rows.length ? rows.map(item => `
+        <tr>
+          <td><input class="item-name" value="${escapeHtml(item.name)}" data-edit-item="${item.id}" data-field="name"></td>
+          <td>
+            <select data-edit-item="${item.id}" data-field="category">
+              <option value="food" ${item.category !== "drink" ? "selected" : ""}>طعام</option>
+              <option value="drink" ${item.category === "drink" ? "selected" : ""}>مشروبات</option>
+            </select>
+          </td>
+          <td><input value="${escapeHtml(item.unit)}" data-edit-item="${item.id}" data-field="unit"></td>
+          <td><input type="number" min="0" step="0.001" value="${inputValue(item.stock)}" data-edit-item="${item.id}" data-field="stock"></td>
+          <td><input type="number" min="0.001" step="0.001" value="${inputValue(item.pack)}" data-edit-item="${item.id}" data-field="pack"></td>
+          <td>${format(item.daily)} ${escapeHtml(item.unit)}</td>
+          <td>${format(item.coverage)} يوم</td>
+          <td>${item.buyQty ? `${format(item.buyQty)} ${escapeHtml(item.unit)}` : "-"}</td>
+          <td><span class="status status-${item.level}">${statusLabel(item.level)}</span></td>
+          <td><button class="danger" type="button" data-delete-item="${item.id}">حذف</button></td>
+        </tr>
+      `).join("") : `
+        <tr>
+          <td colspan="10">
+            <div class="empty">لا توجد مواد بعد. أضف أول مادة من أسفل الصفحة.</div>
+          </td>
+        </tr>
+      `;
+
+      const restock = rows.filter(item => item.level === "restock");
+      const coverageValues = rows.filter(item => item.daily > 0).map(item => item.coverage);
+      const avgCoverage = coverageValues.length
+        ? coverageValues.reduce((sum, value) => sum + value, 0) / coverageValues.length
+        : 0;
+
+      document.getElementById("todayOrders").textContent = format(state.ordersToday, 0);
+      document.getElementById("restockCount").textContent = restock.length;
+      document.getElementById("coverageAverage").textContent = `${format(avgCoverage)} يوم`;
+      document.getElementById("itemCount").textContent = state.inventory.length;
+      document.getElementById("drinkCount").textContent = state.inventory.filter(item => item.category === "drink").length;
+      renderDashboard(rows);
+      renderAlerts(rows);
+    }
+
+    function renderAlerts(rows) {
+      const risky = rows.filter(item => item.level !== "ok").sort((a, b) => a.coverage - b.coverage);
+      document.getElementById("alerts").innerHTML = risky.length
+        ? risky.map(item => `
+          <div class="alert alert-${item.level}">
+            <strong>${escapeHtml(item.name)} (${categoryLabel(item.category)}): ${statusLabel(item.level)}</strong>
+            <p>المخزون يكفي تقريبًا ${format(item.coverage)} يوم. الكمية المقترحة للشراء: ${format(item.buyQty)} ${escapeHtml(item.unit)}.</p>
+          </div>
+        `).join("")
+        : `<div class="alert"><strong>المخزون جيد</strong><p>لا توجد مواد منخفضة حاليًا.</p></div>`;
+    }
+
+    function inventoryOptions(selectedId = "") {
+      return state.inventory.map(item => `
+        <option value="${item.id}" ${item.id === selectedId ? "selected" : ""}>
+          ${escapeHtml(item.name)} - ${categoryLabel(item.category)} - الموجود الآن ${format(item.stock)} ${escapeHtml(item.unit)}
+        </option>
+      `).join("");
+    }
+
+    function renderDishes() {
+      const dishSelect = document.getElementById("dishSelect");
+      dishSelect.innerHTML = state.dishes.length
+        ? state.dishes.map(dish => `<option value="${dish.id}">${escapeHtml(dish.name)}</option>`).join("")
+        : `<option value="">أضف صنفًا مباعًا أولًا</option>`;
+
+      document.getElementById("dishList").innerHTML = state.dishes.length
+        ? state.dishes.map(dish => `
+          <div class="dish">
+            <div class="dish-top">
+              <label>اسم الطبق
+                <input value="${escapeHtml(dish.name)}" data-edit-dish="${dish.id}" data-field="name">
+              </label>
+              <label>متوسط بيع/يوم
+                <input type="number" min="0" step="1" value="${dish.dailyBase}" data-edit-dish="${dish.id}" data-field="dailyBase">
+              </label>
+              <button class="danger" type="button" data-delete-dish="${dish.id}">حذف الطبق</button>
+            </div>
+            <div class="recipe">
+              ${Object.entries(dish.recipe).length ? Object.entries(dish.recipe).map(([itemId, amount]) => {
+                const item = state.inventory.find(row => row.id === itemId);
+                if (!item) return "";
+                return `
+                  <div class="recipe-row">
+                    <label>المادة
+                      <select data-recipe-select="${dish.id}" data-old-item="${itemId}">
+                        ${inventoryOptions(itemId)}
+                      </select>
+                    </label>
+                    <label>الكمية المستخدمة في الصنف الواحد
+                      <input type="number" min="0" step="0.001" value="${inputValue(amount)}" data-recipe-amount="${dish.id}" data-item="${itemId}">
+                    </label>
+                    <button class="danger" type="button" data-delete-recipe="${dish.id}" data-item="${itemId}">حذف</button>
+                  </div>
+                `;
+              }).join("") : `<div class="empty">لا توجد مواد لهذا الصنف بعد. اختر مادة من القائمة وأضف الكمية المستخدمة.</div>`}
+              <div class="recipe-row">
+                <label>إضافة مادة للصنف
+                  <select data-new-recipe-item="${dish.id}" ${state.inventory.length ? "" : "disabled"}>
+                    ${state.inventory.length ? inventoryOptions() : `<option value="">أضف مخزونًا أولًا</option>`}
+                  </select>
+                </label>
+                <label>الكمية المستخدمة في الصنف الواحد
+                  <input type="number" min="0" step="0.001" value="1" data-new-recipe-amount="${dish.id}" ${state.inventory.length ? "" : "disabled"}>
+                </label>
+                <button type="button" data-add-recipe="${dish.id}" ${state.inventory.length ? "" : "disabled"}>إضافة</button>
+              </div>
+            </div>
+          </div>
+        `).join("")
+        : `<div class="empty">أضف صنفًا مباعًا من أسفل الصفحة، ثم اختر مواده وكمياتها هنا.</div>`;
+    }
+
+    function renderAll() {
+      renderInventory();
+      renderDishes();
+    }
+
+    function updateItem(input) {
+      const item = state.inventory.find(row => row.id === input.dataset.editItem);
+      if (!item) return;
+      const field = input.dataset.field;
+      item[field] = ["stock", "pack"].includes(field) ? numberValue(input.value) : input.value.trim();
+      saveState();
+      renderAll();
+    }
+
+    function updateDish(input) {
+      const dish = state.dishes.find(row => row.id === input.dataset.editDish);
+      if (!dish) return;
+      const field = input.dataset.field;
+      dish[field] = field === "dailyBase" ? numberValue(input.value) : input.value.trim();
+      saveState();
+      renderAll();
+    }
+
+    function updateRecipeAmount(input) {
+      const dish = state.dishes.find(row => row.id === input.dataset.recipeAmount);
+      if (!dish) return;
+      const amount = numberValue(input.value);
+      dish.recipe[input.dataset.item] = amount;
+      saveState();
+      renderInventory();
+    }
+
+    function updateRecipeItem(select) {
+      const dish = state.dishes.find(row => row.id === select.dataset.recipeSelect);
+      if (!dish) return;
+      const oldItemId = select.dataset.oldItem;
+      const newItemId = select.value;
+      if (!newItemId || oldItemId === newItemId) return;
+
+      const currentAmount = numberValue(dish.recipe[oldItemId]);
+      delete dish.recipe[oldItemId];
+      dish.recipe[newItemId] = currentAmount;
+      saveState();
+      renderAll();
+    }
+
+    function registerOrder(dishId, qty) {
+      const dish = state.dishes.find(item => item.id === dishId);
+      if (!dish || qty <= 0) return;
+      if (!Object.keys(dish.recipe).length) {
+        showToast("أضف مواد هذا الصنف أولًا حتى يعرف البرنامج ماذا يخصم من المخزون.");
+        return;
+      }
+
+      Object.entries(dish.recipe).forEach(([itemId, amount]) => {
+        const item = state.inventory.find(i => i.id === itemId);
+        if (item) item.stock = Math.max(0, roundNumber(numberValue(item.stock) - numberValue(amount) * qty));
+      });
+
+      state.ordersToday = roundNumber(state.ordersToday + qty);
+      saveState();
+      renderAll();
+      showToast("تم تسجيل البيع وخصم الكميات من المخزون.");
+    }
+
+    document.addEventListener("change", event => {
+      const target = event.target;
+      if (target.matches("[data-edit-item]")) updateItem(target);
+      if (target.matches("[data-edit-dish]")) updateDish(target);
+      if (target.matches("[data-recipe-amount]")) updateRecipeAmount(target);
+      if (target.matches("[data-recipe-select]")) updateRecipeItem(target);
+    });
+
+    document.addEventListener("click", event => {
+      const deleteItemId = event.target.dataset.deleteItem;
+      const deleteDishId = event.target.dataset.deleteDish;
+      const deleteRecipeDishId = event.target.dataset.deleteRecipe;
+      const addRecipeDishId = event.target.dataset.addRecipe;
+
+      if (deleteItemId) {
+        state.inventory = state.inventory.filter(item => item.id !== deleteItemId);
+        state.dishes.forEach(dish => delete dish.recipe[deleteItemId]);
+        saveState();
+        renderAll();
+      }
+
+      if (deleteDishId) {
+        state.dishes = state.dishes.filter(dish => dish.id !== deleteDishId);
+        saveState();
+        renderAll();
+      }
+
+      if (deleteRecipeDishId) {
+        const dish = state.dishes.find(row => row.id === deleteRecipeDishId);
+        if (dish) {
+          delete dish.recipe[event.target.dataset.item];
+          saveState();
+          renderAll();
+        }
+      }
+
+      if (addRecipeDishId) {
+        const dish = state.dishes.find(row => row.id === addRecipeDishId);
+        const itemSelect = document.querySelector(`[data-new-recipe-item="${addRecipeDishId}"]`);
+        const amountInput = document.querySelector(`[data-new-recipe-amount="${addRecipeDishId}"]`);
+        if (dish && itemSelect && itemSelect.value) {
+          dish.recipe[itemSelect.value] = numberValue(amountInput.value, 1);
+          saveState();
+          renderAll();
+        }
+      }
+    });
+
+    document.getElementById("itemForm").addEventListener("submit", event => {
+      event.preventDefault();
+      const name = document.getElementById("newItemName").value.trim();
+      const unit = document.getElementById("newItemUnit").value.trim();
+      if (!name || !unit) return;
+
+      state.inventory.push({
+        id: idFromName(name),
+        name,
+        unit,
+        category: document.getElementById("newItemCategory").value,
+        stock: numberValue(document.getElementById("newItemStock").value),
+        pack: Math.max(.001, numberValue(document.getElementById("newItemPack").value, 1))
+      });
+
+      event.target.reset();
+      document.getElementById("newItemStock").value = 0;
+      document.getElementById("newItemPack").value = 1;
+      saveState();
+      renderAll();
+      showToast("تمت إضافة المادة إلى المخزون.");
+    });
+
+    document.getElementById("dishForm").addEventListener("submit", event => {
+      event.preventDefault();
+      const name = document.getElementById("newDishName").value.trim();
+      if (!name) return;
+
+      state.dishes.push({
+        id: idFromName(name),
+        name,
+        dailyBase: numberValue(document.getElementById("newDishDaily").value, 10),
+        recipe: {}
+      });
+
+      event.target.reset();
+      document.getElementById("newDishDaily").value = 10;
+      saveState();
+      renderAll();
+      showToast("تمت إضافة الصنف المباع. أضف مواده من قسم مكونات كل صنف.");
+    });
+
+    document.getElementById("orderForm").addEventListener("submit", event => {
+      event.preventDefault();
+      registerOrder(document.getElementById("dishSelect").value, numberValue(document.getElementById("dishQty").value, 1));
+    });
+
+    document.getElementById("clearOrders").addEventListener("click", () => {
+      state.ordersToday = 0;
+      saveState();
+      renderAll();
+    });
+
+    ["leadTime", "safety", "demandMode"].forEach(id => {
+      document.getElementById(id).addEventListener("input", renderInventory);
+    });
+
+    state = loadState();
+    renderAll();
+  </script>
+</body>
+</html>
